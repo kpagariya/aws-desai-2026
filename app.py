@@ -1,0 +1,30 @@
+from flask import Flask, request, render_template
+import boto3
+import uuid
+
+app = Flask(__name__)
+
+# boto3 automatically picks EC2 IAM Role
+s3 = boto3.client('s3')
+
+BUCKET_NAME = "my-photo-upload-bucket-123"
+
+@app.route("/", methods=["GET", "POST"])
+def upload_file():
+ if request.method == "POST":
+ 	file = request.files["photo"]
+
+
+ if file:
+ 	filename = f"{uuid.uuid4()}_{file.filename}"
+ 	s3.upload_fileobj(
+		 file,
+		 BUCKET_NAME,
+ 		filename,
+ 		ExtraArgs={"ContentType": file.content_type}
+ 	)
+ 	return f" File uploaded successfully: {filename}"
+ return render_template("upload.html")
+
+if __name__ == "__main__":
+ app.run(host="0.0.0.0", port=80)
