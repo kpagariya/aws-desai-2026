@@ -15,7 +15,7 @@
 
 <script>
 
-const socket = new WebSocket("YOUR_WEBSOCKET_URL");
+const socket = new WebSocket("wss://URL");
 
 socket.onopen = function () {
     console.log("Connected to WebSocket");
@@ -35,9 +35,14 @@ socket.onmessage = function (event) {
 
 function sendMessage() {
 
+    if (socket.readyState !== WebSocket.OPEN) {
+        console.log("Socket not connected");
+        return;
+    }
+
     const payload = {
         action: "sendMessage",
-        sender: "Kunal",
+        sender: "Saloni",
         message: "Hello AWS"
     };
 
