@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AWS WebSocket Test</title>
+</head>
+
+<body>
+
+<h2>AWS WebSocket Test</h2>
+
+<button onclick="sendMessage()">
+    Send Message
+</button>
+
+<script>
+
+const socket = new WebSocket("YOUR_WEBSOCKET_URL");
+
+socket.onopen = function () {
+    console.log("Connected to WebSocket");
+};
+
+socket.onclose = function () {
+    console.log("Disconnected");
+};
+
+socket.onerror = function (error) {
+    console.error("WebSocket Error:", error);
+};
+
+socket.onmessage = function (event) {
+    console.log("Received:", event.data);
+};
+
+function sendMessage() {
+
+    const payload = {
+        action: "sendMessage",
+        sender: "Kunal",
+        message: "Hello AWS"
+    };
+
+    socket.send(JSON.stringify(payload));
+
+    console.log("Message Sent");
+}
+
+</script>
+
+</body>
+</html>
